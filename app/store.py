@@ -12,6 +12,9 @@ class ItemStore:
         self._next_id += 1
         return item
 
+    def list_all(self) -> list[Item]:
+        return list(self._items.values())
+
     def get(self, item_id: int) -> Item | None:
         return self._items.get(item_id)
 
