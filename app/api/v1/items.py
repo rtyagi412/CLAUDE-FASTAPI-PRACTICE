@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Response
 
 from app.models import Item, ItemCreate
 from app.store import store
@@ -17,3 +17,10 @@ def get_item(item_id: int) -> Item:
     if item is None:
         raise HTTPException(status_code=404, detail="Item not found")
     return item
+
+
+@router.delete("/items/{item_id}", status_code=204)
+def delete_item(item_id: int) -> Response:
+    if not store.delete(item_id):
+        raise HTTPException(status_code=404, detail="Item not found")
+    return Response(status_code=204)

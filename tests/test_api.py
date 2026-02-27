@@ -50,3 +50,20 @@ def test_get_item_not_found() -> None:
     response = client.get("/v1/items/999")
     assert response.status_code == 404
     assert response.json() == {"detail": "Item not found"}
+
+
+def test_delete_item_returns_204() -> None:
+    client.post("/v1/items", json={"name": "widget"})
+    assert client.delete("/v1/items/1").status_code == 204
+
+
+def test_delete_item_removes_item() -> None:
+    client.post("/v1/items", json={"name": "widget"})
+    client.delete("/v1/items/1")
+    assert client.get("/v1/items/1").status_code == 404
+
+
+def test_delete_item_not_found() -> None:
+    response = client.delete("/v1/items/999")
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Item not found"}
